@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GrowIndo Dashboard</title>
+<link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/764398994532073504/1506692177986584596/file_00000000ac1871f59bfb001cf2d29830.png?ex=6a0fd8b0&is=6a0e8730&hm=a1b19f1f6067fc8043ebd934121249b3e2fde7556f825fac057f9fd1becf3ecf">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+
+      font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+    }
+
+    body {
+      background: #070707;
+      color: white;
+      min-height: 100vh;
+
+      display: flex;
+      justify-content: center;
+
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+
+      background: #0d0d0d;
+
+      border: 1px solid #1d1d1d;
+
+      border-radius: 18px;
+
+      padding: 30px;
+
+      margin: auto;
+    }
+
+    .title {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #f89f9f;
+
+      margin-bottom: 30px;
+
+      font-size: 14px;
+
+      font-weight: 600;
+    }
+
+    .server-name {
+      color: #e2dfdf;
+      margin-bottom: 11px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* BUTTONS */
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+
+      margin-bottom: 25px;
+    }
+
+    button {
+      width: 235px;
+
+      padding: 8px 16px;
+
+      border: none;
+
+      border-radius: 16px;
+
+      background: #1b1616e5;
+
+      color: white;
+
+      font-size: 12px;
+
+      font-weight: 1000;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+
+      border: 1px solid #242424;
+
+      text-align: left;
+    }
+
+    button:hover {
+      background: #1d1d1d;
+      border-color: #353535;
+    }
+
+    /* COPY SUCCESS */
+
+    .copy-alert {
+      position: fixed;
+
+      bottom: 20px;
+      right: 20px;
+
+      background: #171717;
+
+      border: 1px solid #2b2b2b;
+
+      color: white;
+
+      padding: 12px 18px;
+
+      border-radius: 12px;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition: 0.3s;
+
+      z-index: 9999;
+    }
+
+    .copy-alert.show {
+      opacity: 1;
+    }
+
+    /* APK TEXT */
+
+    .apk-text {
+      color: #adadad;
+
+      font-size: 13px;
+
+      line-height: 1.8;
+
+      font-weight: 600;
+
+      max-width: 850px;
+
+      margin-top: -5px;
+      margin-bottom: 1px;
+    }
+
+    /* COMMUNITY */
+
+    .community-box {
+      width: 281px;
+
+      background: #141414;
+
+      border: 1px solid #242424;
+
+      border-radius: 12px;
+
+      padding: 12px 14px;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+
+      margin-bottom: 22px;
+    }
+
+    .community-box:hover {
+      background: #1d1d1d;
+      border-color: #333333;
+    }
+
+    .community-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .community-top img {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .community-title {
+      color: white;
+
+      font-size: 12px;
+
+      font-weight: 1000;
+
+      white-space: nowrap;
+    }
+
+    /* MODAL */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+
+      background: rgba(0, 0, 0, 0.72);
+
+      display: none;
+
+      justify-content: center;
+      align-items: center;
+
+      z-index: 999;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 370px;
+
+      background: #0f0f0f;
+
+      border: 1px solid #242424;
+
+      border-radius: 18px;
+
+      padding: 22px;
+
+      position: relative;
+    }
+
+    .modal-title {
+      font-size: 24px;
+
+      font-weight: 800;
+
+      letter-spacing: -0.4px;
+
+      margin-bottom: 22px;
+    }
+
+    /* CLOSE X */
+
+    .close-x {
+      position: absolute;
+
+      top: 18px;
+      right: 18px;
+
+      width: 34px;
+      height: 34px;
+
+      border-radius: 10px;
+
+      background: #161616;
+
+      border: 1px solid #2a2a2a;
+
+      color: #9f9f9f;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+
+      font-size: 18px;
+
+      font-weight: 700;
+    }
+
+    .close-x:hover {
+      background: #1f1f1f;
+      color: white;
+    }
+
+    /* MODAL ITEM */
+
+    .modal-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      padding: 14px;
+
+      background: #141414;
+
+      border: 1px solid #242424;
+
+      border-radius: 12px;
+
+      margin-bottom: 12px;
+
+      text-decoration: none;
+
+      color: white;
+
+      transition: 0.2s;
+    }
+
+    .modal-item:hover {
+      background: #1d1d1d;
+      border-color: #353535;
+    }
+
+    .modal-item img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .modal-item span {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    /* CONTACT */
+
+    .modal-contact {
+      color: #8c8c8c;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      margin: 20px 0 12px 2px;
+    }
+
+    /* TABS */
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+
+      margin-bottom: 20px;
+
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 11px 18px;
+
+      background: #141414;
+
+      border-radius: 10px;
+
+      color: #9c9c9c;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      border: 1px solid #242424;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+
+      user-select: none;
+    }
+
+    .tab:hover {
+      background: #1d1d1d;
+      color: white;
+    }
+
+    .tab.active {
+      background: #242424;
+      color: white;
+    }
+
+    /* CONTENT */
+    .green-link {
+      color: #42d86b;
+
+      cursor: pointer;
+
+      font-weight: 700;
+
+      transition: 0.2s;
+    }
+
+    .green-link:hover {
+      color: #5cff87;
+    }
+
+    .info-box {
+      margin-top: 20px;
+
+      background: #111111;
+
+      border: 1px solid #1d1d1d;
+
+      border-radius: 14px;
+
+      padding: 15px;
+
+      line-height: 2;
+
+      color: #e0e0e0;
+
+      width: 100%;
+      max-width: 900px;
+
+      font-size: 12px;
+
+      font-weight: 600;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @media(max-width:700px) {
+
+      body {
+        padding: 12px;
+      }
+
+      .container {
+        padding: 22px;
+      }
+
+      button {
+        width: 100%;
+        max-width: 260px;
+      }
+
+      .community-box {
+        width: 277px;
+      }
+
+      .title {
+        font-size: 28px;
+      }
+
+      .apk-text {
+        font-size: 12px;
+      }
+
+      .info-box {
+        padding: 15px;
+      }
+
+      .modal-box {
+        margin: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- TITLE -->
+
+    <div class="title">
+      How to play GrowIndo
+    </div>
+
+    <div class="subtitle">
+      Learn how to connect to GrowIndo Server
+    </div>
+
+    <div class="server-name">
+      Server Name: GrowIndo
+    </div>
+
+    <!-- BUTTONS -->
+
+    <div class="button-group">
+
+      <!-- DOWNLOAD -->
+
+      <button onclick="openLink(downloadVHost)">
+        Download Host (VHost)
+      </button>
+
+      <!-- COPY -->
+
+      <button onclick="copyText(powerTunnelText)">
+        Copy Powertunnel
+      </button>
+
+      <button onclick="copyText(iosHostText)">
+        Copy IOS Host (Surge 5)
+      </button>
+
+      <button onclick="copyText(windowsHostText)">
+        Copy Windows Host text
+      </button>
+
+      <button onclick="copyText(macHostText)">
+        Copy MacOS Host text
+      </button>
+
+      <!-- APK TEXT -->
+
+      <div class="apk-text">
+        Want to play without doing any other steps? - Download .apk file and install it and you're ready to play! (It
+        works just like normal Growtopia but connects you to GTPS directly)
+
+
+      </div>
+
+      <!-- DOWNLOAD APK -->
+
+      <button onclick="openLink(downloadAPK)">
+        Download Custom APK
+      </button>
+
+      <button onclick="openLink(downloadGrowlauncherAPK)">
+        Download Growlauncher APK
+      </button>
+
+    </div>
+
+    <!-- COMMUNITY -->
+
+    <div class="community-box" onclick="openModal()">
+
+      <div class="community-top">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png">
+
+        <div class="community-title">
+          Group Community GrowIndo
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- TABS -->
+
+    <div class="tabs">
+
+      <div class="tab active" onclick="showTab('android', this)">
+        Android
+      </div>
+
+      <div class="tab" onclick="showTab('ios', this)">
+        iOS
+      </div>
+
+      <div class="tab" onclick="showTab('windows', this)">
+        Windows
+      </div>
+
+    </div>
+
+    <!-- ANDROID -->
+
+    <div class="info-box tab-content active" id="android">
+
+      <p>
+        1 - First, download PowerTunnel APP from
+        <span class="green-link" onclick="openLink(powerTunnelDownload)">
+          here
+        </span>
+      </p>
+
+      <p>2 - Then click the "Powertunnel" button.</p>
+
+      <p>3 - It will copy the PowerTunnel host link.</p>
+
+      <p>4 - Open the PowerTunnel app and open host settings.</p>
+
+      <p>5 - Paste the copied host URL.</p>
+
+      <p>6 - Now you can login to your GTPS.</p>
+
+    </div>
+
+    <!-- IOS -->
+
+    <div class="info-box tab-content" id="ios">
+      <p>1 - Download App called: "Surge 5" from App Store. Surge 5 IOS.</p>
+      <p>2 - Click "Press "OK".</p>
+      <p>3 - Click on "Default.conf".</p>
+      <p>4 - Click on "IMPORT" part - Download Profile from URL.</p>
+      <p>5 - Put url from your copy when click IOS host button above and click "OK" and "Done".</p>
+      <p>6 - Press "SETUP" and then agree to policy by clicking "OK" and "Allow" for VPN Configuration!.</p>
+      <p>7 - Done, then open "Growtopia" and Connect!</p>
+
+    </div>
+
+    <!-- WINDOWS -->
+
+    <div class="info-box tab-content" id="windows">
+
+      <p>1 - Press ⊞ Win+R (Windows Key + R) to open up the "Run" window.</p>
+
+      <p>2 - Type in C:\Windows\System32\drivers\etc in the textbox.</p>
+
+      <p>3 - Find file named hosts.</p>
+
+      <p>4 - Right-click on "hosts" file and edit it with Notepad/text editor.</p>
+
+      <p>5 - Add ip above.</p>
+
+      <p>6 - Then Save and logon to your growtopia!</p>
+
+    </div>
+
+  </div>
+
+  <!-- MODAL -->
+
+  <div class="modal" id="communityModal">
+
+    <div class="modal-box">
+
+      <!-- CLOSE X -->
+
+      <div class="close-x" onclick="closeModal()">
+        ×
+      </div>
+
+      <!-- TITLE -->
+
+      <div class="modal-title">
+        GrowIndo Community
+      </div>
+
+      <!-- DISCORD -->
+
+      <a class="modal-item" href="https://discord.gg/dARFGAnG6a" target="_blank">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png">
+
+        <span>Discord Group</span>
+
+      </a>
+
+      <!-- WHATSAPP GROUP -->
+
+      <a class="modal-item" href="https://chat.whatsapp.com/group" target="_blank">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+
+        <span>WhatsApp Group </span>
+
+      </a>
+
+      <!-- CONTACT -->
+
+      <div class="modal-contact">
+        Contact
+      </div>
+
+      <!-- OWNER WA -->
+
+      <a class="modal-item" href="https://wa.me/6283178955346" target="_blank">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+
+        <span>Contact Owner (WhatsApp)</span>
+
+      </a>
+
+      <!-- OWNER DISCORD -->
+
+      <a class="modal-item" href="https://discord.com/users/1504429348256485476" target="_blank">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png">
+
+        <span>Contact Owner (Discord)</span>
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- COPY ALERT -->
+
+  <div class="copy-alert" id="copyAlert">
+    Copied successfully!
+  </div>
+
+  <script>
+
+    /*
+    ===========================
+    LINK VARIABLES
+    ===========================
+    */
+
+    const downloadVHost =
+      "GrowIndo.txt";
+
+    const downloadAPK =
+      "https://dash.gtps.cloud/gtpscloud.apk";
+
+    const downloadGrowlauncherAPK =
+      "https://example.com/growlauncher-apk";
+
+    const powerTunnelText =
+      "https://dash.gtps.cloud/android/5944";
+
+    const iosHostText =
+      "https://dash.gtps.cloud/ios/5944";
+
+    const windowsHostText =
+      "91.134.85.13 growtopia1.com\n" +
+      "91.134.85.13 growtopia2.com\n" +
+      "91.134.85.13 www.growtopia1.com\n" +
+      "91.134.85.13 www.growtopia2.com\n";
+
+    const macHostText =
+      "91.134.85.13 growtopia1.com\n" +
+      "91.134.85.13 growtopia2.com\n" +
+      "91.134.85.13 www.growtopia1.com\n" +
+      "91.134.85.13 www.growtopia2.com\n";
+
+    const powerTunnelDownload =
+      "https://github.com/krlvm/PowerTunnel-Android/releases/download/v2.6.3/PowerTunnel.apk";
+
+
+    /*
+    ===========================
+    OPEN LINK
+    ===========================
+    */
+
+    function openLink(url) {
+      window.open(url, "_blank");
+    }
+
+
+
+    /*
+    ===========================
+    COPY FUNCTION
+    ===========================
+    */
+
+    function copyText(text) {
+
+      navigator.clipboard.writeText(text);
+
+      const alertBox =
+        document.getElementById('copyAlert');
+
+      alertBox.classList.add('show');
+
+      setTimeout(() => {
+        alertBox.classList.remove('show');
+      }, 1800);
+    }
+
+    function openLink(url) {
+
+      const a = document.createElement('a');
+
+      a.href = url;
+
+      a.download = '';
+
+      document.body.appendChild(a);
+
+      a.click();
+
+      document.body.removeChild(a);
+    }
+
+    /*
+    ===========================
+    TAB SYSTEM
+    ===========================
+    */
+
+    function showTab(tabId, element) {
+
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+
+      element.classList.add('active');
+
+      document.getElementById(tabId).classList.add('active');
+    }
+
+
+
+    /*
+    ===========================
+    MODAL
+    ===========================
+    */
+
+    function openModal() {
+
+      document.getElementById('communityModal')
+        .classList.add('active');
+    }
+
+    function closeModal() {
+
+      document.getElementById('communityModal')
+        .classList.remove('active');
+    }
+
+    // CLOSE OUTSIDE CLICK
+
+    window.onclick = function (event) {
+
+      const modal =
+        document.getElementById('communityModal');
+
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>
